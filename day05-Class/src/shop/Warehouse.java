@@ -123,10 +123,11 @@ public class Warehouse {
 			// 2. rmIndex가 배열 마지막일 때
 				for (int idx = 0; idx < products.length - 1; idx++) {
 					newProducts[idx] = products[idx];
-				}
-				
+				}				
 			}
-		}
+			this.products = newProducts;
+			
+		} // outer if end
 	} // method remove end
 	
 	/**
