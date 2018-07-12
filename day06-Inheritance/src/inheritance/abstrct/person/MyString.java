@@ -5,6 +5,6 @@ package inheritance.abstrct.person;
  * @author PC38218
  *
  */
-public class MyString extends String {
+public class MyString /*extends String*/ {
 
 }
