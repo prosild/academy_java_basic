@@ -1,0 +1,82 @@
+package shop.test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import shop.GeneralWarehouse;
+import shop.Manager;
+import shop.MapWarehouse;
+import shop.Product;
+import shop.Shop;
+
+public class ShopTest {
+
+	public static void main(String[] args) {
+		
+		// 1. 창고에 들여놓을 제품 선반이 먼저 필요
+		Product[] products = new Product[0];
+		List<Product> prods = new ArrayList<Product>();
+		Set<Product> prodsSet = new HashSet<Product>();
+		Map<String, Product> prodsMap = new HashMap<>();
+		
+		// 2. 선반을 설치할 창고를 지어야 함
+//		GeneralWarehouse warehouse = new ArrayWarehouse(products);
+//		GeneralWarehouse warehouse = new ListWarehouse(prods);
+//		GeneralWarehouse warehouse = new SetWarehouse(prodsSet);
+		GeneralWarehouse warehouse = new MapWarehouse(prodsMap);
+		
+		// 3. 매장을 관리할 매니저를 고용함
+		Manager manager = new Manager(warehouse);
+		
+		// 4. 매장을 오픈
+		Shop abcMart = new Shop(manager);
+		
+		//-------------------------------------------------
+		// 매장에 입고할 신규 제품(신발)이 매장에 도착했다.
+		Product adidas = new Product("S001", "슈퍼스타", 87200, 5);
+		Product reebok = new Product("S002", "리복 로얄 테크큐 티", 42000, 20);
+		Product nike = new Product("S003", "나이키 탄준 샌들", 41300, 30);
+		Product crocs = new Product("S004", "라이트라이드 샌들 우먼", 40200, 7);
+		Product birkenstock = new Product("S005", "지제 에바", 29000, 15);
+		
+		Product adidas3 = new Product("S001", "슈퍼스타", 87200, 5);
+		Product reebok2 = new Product("S002", "리복 로얄 테크큐 티", 42000, 20);
+		Product nike2 = new Product("S003", "나이키 탄준 샌들", 41300, 30);
+		Product crocs2 = new Product("S004", "라이트라이드 샌들 우먼", 40200, 7);
+		Product birkenstock2 = new Product("S005", "지제 에바", 29000, 15);
+		
+		// 1. 매장에 도착한 제품을 입고
+		abcMart.add(adidas);
+		abcMart.add(reebok);
+		abcMart.add(nike);
+		abcMart.add(crocs);
+		abcMart.add(birkenstock);
+		
+		abcMart.add(adidas3);
+		abcMart.add(reebok2);
+		abcMart.add(nike2);
+		abcMart.add(crocs2);
+		abcMart.add(birkenstock2);
+		
+		// 2. 입고된 제품 전체 확인
+		abcMart.getAllProducts();
+		
+		// 3. 아디다스 제품 수정
+		Product adidas2 = new Product("S001", "슈퍼스타", 75000, 5);
+		abcMart.set(adidas2);
+		
+		// 4. 수정된 아디다스 제품 수정 확인
+		abcMart.get(new Product("S001", null, 0, 0));
+		
+		// 5. 판매 종료할 제품 폐기
+		abcMart.remove(new Product("S001", null, 0, 0));
+		
+		// 6. 폐기 확인을 위해 전체 목록 재 조회
+		System.out.println("===========================================================================================");
+		abcMart.getAllProducts();
+	}
+}
