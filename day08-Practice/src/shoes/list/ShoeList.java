@@ -35,17 +35,32 @@ import shoes.Shoe;
 
 public class ShoeList {
 
-	List<Shoe> shoes;
+	// 1. 멤버 변수 선언부
+	private List<Shoe> shoes;
 	
+	// 2. 생성자 선언부
+	// (1) 기본 생성자
 	public ShoeList() {
 		shoes = new ArrayList<Shoe>();
 	}
 	
+	// (2) 매개변수를 받는 생성자
 	public ShoeList(List<Shoe> shoes) {
 		this();
 		this.shoes = shoes;
 	}
 	
+	// 접근자
+	public List<Shoe> getShoes() {
+		return shoes;
+	}
+	
+	// 수정자
+	public void setShoes(List<Shoe> shoes) {
+		this.shoes = shoes;
+	}
+	
+	// 신발 정보 추가
 	public int add(Shoe shoe) {
 		int addSuccess = 0;
 		
@@ -57,6 +72,7 @@ public class ShoeList {
 		return addSuccess;
 	}
 	
+	// 신발 한 종류 정보 수정
 	public int set(Shoe shoe) {
 		int setSuccess = 0;
 		int setIndex = foundIndex(shoe);
@@ -70,6 +86,7 @@ public class ShoeList {
 		return setSuccess;
 	}
 	
+	// 신발 한 종류 정보 제거
 	public int remove(Shoe shoe) {
 		int removeSuccess = 0;
 		int removeIndex = foundIndex(shoe);
@@ -82,6 +99,7 @@ public class ShoeList {
 		return removeSuccess;
 	}
 	
+	// 신발 한 종류 정보 리턴
 	public Shoe get(Shoe shoe) {
 		int getIndex = foundIndex(shoe);
 		Shoe found = null;
@@ -93,6 +111,12 @@ public class ShoeList {
 		return found;
 	}
 	
+	// 전체 신발 정보 리턴
+	public List<Shoe> getAllShoes() {
+		return this.shoes;
+	}
+	
+	// 리스트 인덱스 검색
 	public int foundIndex(Shoe shoe) {
 		int index = -1;
 		

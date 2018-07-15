@@ -40,66 +40,47 @@ public class ShoeTest {
 		Shoe stilmoda = new Shoe("SH003", "코랄로", 280, 59000, "구두", 3);
 		Shoe hawkins = new Shoe("SH004", "첼시 러그", 265, 90000, "부츠", 2);
 		
-		List<Shoe> shoes = new ArrayList<>();
-		ShoeTest st = new ShoeTest();
-		
-		// for문 전체 인덱스
-		int idx;
-		
 		/* 2. (1) Shoe 타입을 저장할 수 있는 List<Shoe> shoes 를
 	              선언하여 리스트에 add(shoe) 로 추가
 	    	  (2) Set<Shoe> shoes 를 선언하여 add(shoe)로 추가
 	    	  (3) Map<Shoe> shoes 를 선언하여 put(code, shoe)로 추가
 	    */
+		List<Shoe> shoes = new ArrayList<Shoe>();
+
 		shoes.add(adidas);
 		shoes.add(nike);
 		shoes.add(stilmoda);
 		shoes.add(hawkins);
 
+		ShoeList shoeList = new ShoeList(shoes);
+
 		// 3. 각 자료구조별 shoes 를 foreach 로 출력
 		System.out.println("3. --------------------------------------------------------------------------------------------------------------");
-		for (Shoe shoe : shoes) {
+		for (Shoe shoe: shoeList.getAllShoes()) {
 			System.out.println(shoe);
 		}
 		
-		// 4. SH003 번 코드로 등록된 신발의 정보 1개를 출력
-		
-		for (idx = 0; idx < shoes.size(); idx++) {
-			if (shoes.get(idx).getShoeCode().equals("SH003")) {
-				break;
-			}
-		}
-		
+		// 4. SH003 번 코드로 등록된 신발의 정보 1개를 출력		
 		System.out.println("4. --------------------------------------------------------------------------------------------------------------");
-		System.out.println(shoes.get(idx));
+		Shoe stilmoda2 = new Shoe("SH003");
+		System.out.println(shoeList.get(stilmoda2));
 		
 		// 5. SH003 번 코드로 등록된 신발의 정보에서 재고를 0으로 조정
-		for (idx = 0; idx < shoes.size(); idx++) {
-			if (shoes.get(idx).getShoeCode().equals("SH003")) {
-				break;
-			}
-		}
+		Shoe stilmoda3 = new Shoe("SH003", "코랄로", 280, 59000, "구두", 0);
 		
-		stilmoda = new Shoe("SH003", "코랄로", 280, 59000, "구두", 0);
-		shoes.set(idx, stilmoda);
-		
+		shoeList.set(stilmoda3);
+				
 		// 6. 재고가 조정된 내용 출력
 		System.out.println("6. --------------------------------------------------------------------------------------------------------------");
-		System.out.println(shoes.get(idx));
+		System.out.println(shoeList.get(stilmoda3));
 		
 		// 7. SH003 번 코드로 등록된 신발 정보를 삭제
-		for (idx = 0; idx < shoes.size(); idx++) {
-			if (shoes.get(idx).getShoeCode().equals("SH003")) {
-				shoes.remove(idx);
-				break;
-			}
-		}
+		shoeList.remove(stilmoda2);
 		
 		// 8. 삭제된 신발의 정보가 shoes 에 없는 것을 출력(전체 출력)
 		System.out.println("8. --------------------------------------------------------------------------------------------------------------");
-		for (Shoe shoe : shoes) {
+		for (Shoe shoe: shoeList.getAllShoes()) {
 			System.out.println(shoe);
 		}
-		
 	}	
 }

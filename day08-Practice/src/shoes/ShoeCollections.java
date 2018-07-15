@@ -1,5 +1,7 @@
 package shoes;
 
+import java.util.List;
+
 public interface ShoeCollections {
 	/**
 	 * Shoe 정보 1건을 추가함 <br/>
@@ -45,4 +47,11 @@ public interface ShoeCollections {
 	 *         null : 조회할 제품정보가 존재하지 않음<br/>
 	 */
 	public abstract Shoe get(Shoe shoe);
+	
+	/**
+	 * 전체 제품 목록을 List<Shoe> 타입으로 바꾸어 리턴한다.<br/>
+	 * 실제로 어떤 자료구조로 저장하는지는 중요하지 않음.<br/>
+	 * @param 전체 제품 목록<br/>
+	 */
+	public List<Shoe> getAllShoes();
 }
