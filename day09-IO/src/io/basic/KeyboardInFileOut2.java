@@ -75,6 +75,7 @@ public class KeyboardInFileOut2 {
 				if (br != null) {
 					br.close();
 				}
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
