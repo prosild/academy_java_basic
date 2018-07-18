@@ -20,7 +20,7 @@ public class ListWarehouse implements GeneralWarehouse {
 	// 2. 생성자 선언부
 	// (1) 기본 생성자
 	public ListWarehouse() {
-		products = new ArrayList<>();
+		products = new ArrayList<Product>();
 	}
 	
 	// (2) 매개 변수를 받는 생성자
