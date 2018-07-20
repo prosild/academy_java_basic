@@ -1,15 +1,15 @@
-package shop.controller;
+package book.controller;
 
-import static shop.factory.ReplyFactory.getReply;
+import static book.factory.ViewFactory.getReply;
 
 import java.util.List;
 
-import shop.dao.ArrayWarehouse;
-import shop.dao.GeneralWarehouse;
-import shop.exception.DuplicateException;
-import shop.exception.NotFoundException;
-import shop.view.Reply;
-import shop.vo.Product;
+import book.dao.BookShelf;
+import book.dao.ListBookShelf;
+import book.exception.DuplicateException;
+import book.exception.NotFoundException;
+import book.view.Reply;
+import book.vo.Book;
 
 /**
  * 창고(Warehouse)를 사용하는
@@ -26,66 +26,66 @@ import shop.vo.Product;
  * 전제 조건 : 매니저는 우리 매장의 창고가 어디 있는지
  *             알고 있어야 한다.
  * -------------------------------------------------
- * @author PC38206
+ * @author PC38218
  *
  */
 public class Manager {
 	
 	// 1. 멤버 변수 선언부
 	// 작업할 창고에 대한 변수
-	private GeneralWarehouse warehouse;
+	private BookShelf shelf;
 	// 작업후 응답에 대한 변수
 	private Reply reply;
 	
 	// 2. 생성자 선언부
 	// (1) 매니저 기본 생성자
 	public Manager() {
-		warehouse = new ArrayWarehouse();
+		shelf = new ListBookShelf();
 	}
 	
 	// (2) 매개변수가 있는 매니저 생성자
-	public Manager(GeneralWarehouse warehouse) {
-		this.warehouse = warehouse;
+	public Manager(BookShelf shelf) {
+		this.shelf = shelf;
 	}
 	
-	// warehouse 필드의 접근자 / 수정자 
-	public GeneralWarehouse getWarehouse() {
-		return warehouse;
+	// shelf 필드의 접근자 / 수정자 
+	public BookShelf getWarehouse() {
+		return shelf;
 	}
 
-	public void setWarehouse(GeneralWarehouse warehouse) {
-		this.warehouse = warehouse;
+	public void setWarehouse(BookShelf shelf) {
+		this.shelf = shelf;
 	}
 
 	// 3. 메소드 선언부
 	/**
 	 * 매니저는 제품 한개를 창고로 들고가서
 	 * 창고에 등록을 할 수 있다
-	 * @param product
+	 * @param book
 	 */
-	public void add(Product product) {
+	public void insert(Book book) {
 		String message = null;
 		
 		try {
-			warehouse.add(product);
+			shelf.insert(book);
 			
-			message = String.format("제품 정보[%s]추가에 성공하였습니다."
-					, product.getProdCode());
+			message = String.format("제품 정보[%s]추가에 성공하였습니다.", book.getBookId());
 			
 			reply = getReply("message");
 				
 		} catch (DuplicateException e) {
-			message = String.format("제품 정보[%s]추가에 실패하였습니다."
-					, product.getProdCode());
+			message = String.format("제품 정보[%s]추가에 실패하였습니다.", book.getBookId());
 			
 			reply = getReply("error");
 			e.printStackTrace();
 			
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			// 제품 추가시 예외가 발생 해도, 안해도
 			// 제품 추가에 대한 메시지가 출력되어야 하므로
 			// finally 블록에 작성
-			reply.reply(message);
+			reply.display(message);
 		}
 		
 	}
@@ -93,28 +93,28 @@ public class Manager {
 	/**
 	 * 매니저는 제품 한개를 창고로 들고가서
 	 * 창고에 있던 제품 정보를 수정할 수 있다.
-	 * @param product
+	 * @param book
 	 */
-	public void set(Product product) {
+	public void update(Book book) {
 		String message = null;
 		
 		try {
-			warehouse.set(product);
+			shelf.update(book);
 			
 			message = String.format("제품 정보[%s]수정에 성공하였습니다."
-					, product.getProdCode());
+					, book.getBookId());
 			
 			reply = getReply("message");
 			
 		} catch (NotFoundException e) {
 			message = String.format("제품 정보[%s]수정에 실패하였습니다."
-					, product.getProdCode());
+					, book.getBookId());
 			
 			reply = getReply("error");
 			e.printStackTrace();
 			
 		} finally {
-			reply.reply(message);
+			reply.display(message);
 		}
 		
 	}
@@ -123,27 +123,29 @@ public class Manager {
 	 * 매니저는 창고에 가서 더 이상 팔지 않아 폐기할
 	 * 제품 정보를 제거할 수 있다.
 	 * 이 때, 제거할 제품의 정보는 알고 있어야 한다.
-	 * @param product
+	 * @param book
 	 */
-	public void remove(Product product) {
+	public void delete(Book book) {
 		String message = null;
 		
 		try {
-			warehouse.remove(product);
+			int rmCnt = shelf.delete(book);
 			
-			message = String.format("제품 정보[%s]삭제에 성공하였습니다."
-					, product.getProdCode());
+			if (book != null) {
+				message = String.format("제품 정보[%s]삭제에 성공하였습니다.", book.getBookId());
+			} else {
+				message = String.format("제품 정보[%d]건을 삭제하였습니다.", rmCnt);
+			}
 			
 			reply = getReply("message");
 			
 		} catch (NotFoundException e) {
-			message = String.format("제품 정보[%s]삭제에 실패하였습니다."
-					, product.getProdCode());
+			message = String.format("제품 정보[%s]삭제에 실패하였습니다.", book.getBookId());
 			
 			reply = getReply("error");
 			
 		} finally {
-			reply.reply(message);
+			reply.display(message);
 		}
 		
 	}
@@ -151,26 +153,36 @@ public class Manager {
 	/**
 	 * 매니저는 창고에 가서 요청된 제품 한개를
 	 * 가지고 올 수 있다.
-	 * @param product
+	 * @param book
 	 * @return
 	 */
-	public void get(Product product) {
-		Product found;
+	public void selectOne(Book book) {
+		Book found;
 		
 		try {
-			found = warehouse.get(product);
+			found = shelf.selectOne(book);
 			
 			reply = getReply("single");
-			reply.reply(found);
+			reply.display(found);
 			
 		} catch (NotFoundException e) {
 			reply = getReply("error");
 			
-			reply.reply("찾는 제품["
-					+ product.getProdCode()
-					+"]이(가) 존재하지 않습니다.");
+			reply.display("찾는 제품[" + book.getBookId() +"]이(가) 존재하지 않습니다.");
 			e.printStackTrace();
 		}
+	}
+	
+	public void selectPrice(int low, int high) {
+		List<Book> books = shelf.selectPrice(low, high);
+		reply = getReply("list");
+		reply.display(books);
+	}
+	
+	public void selectKeyword(String keyword) {
+		List<Book> books = shelf.selectKeyword(keyword);
+		reply = getReply("list");
+		reply.display(books);
 	}
 	
 	/**
@@ -178,16 +190,10 @@ public class Manager {
 	 * 제품 정보 전체 목록을 조회할 수 있다
 	 * @return
 	 */
-	public void getAllProducts() {
-		List<Product> products = warehouse.getAllProducts();
+	public void selectAll() {
+		List<Book> books = shelf.selectAll();
 		reply = getReply("list");
-		reply.reply(products);
+		reply.display(books);
 	}
 	
 }
-
-
-
-
-
-

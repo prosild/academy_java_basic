@@ -1,0 +1,4 @@
+1. config (mapper는 만들 때마다 계속 추가하면서)
+2. config를 읽고 팩토리로 만들어주는 client
+3. mapper.xml 쿼리 작성하면서 mapper 인터페이스 작성
+4. dao 작성

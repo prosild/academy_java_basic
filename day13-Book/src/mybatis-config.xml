@@ -14,7 +14,7 @@
     
     <!-- 사용자 정의 타입을 등록 Emp -->
     <typeAliases>
-        <typeAlias type="shop.vo.Product" alias="product"/>
+        <typeAlias type="book.vo.Book" alias="book"/>
     </typeAliases>
     
     <!-- DB 접속 환경 설정 -->
@@ -31,6 +31,6 @@
     </environments>
     
     <mappers>
-        <mapper resource="shop/mapper/ProudctMapper.xml"/>
+        <mapper resource="book/mapper/BookMapper.xml"/>
     </mappers>
 </configuration>

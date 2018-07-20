@@ -26,7 +26,7 @@ import shop.vo.Product;
  * 전제 조건 : 매니저는 우리 매장의 창고가 어디 있는지
  *             알고 있어야 한다.
  * -------------------------------------------------
- * @author PC38206
+ * @author PC38218
  *
  */
 public class Manager {
@@ -69,14 +69,12 @@ public class Manager {
 		try {
 			warehouse.add(product);
 			
-			message = String.format("제품 정보[%s]추가에 성공하였습니다."
-					, product.getProdCode());
+			message = String.format("제품 정보[%s]추가에 성공하였습니다.", product.getProdCode());
 			
 			reply = getReply("message");
 				
 		} catch (DuplicateException e) {
-			message = String.format("제품 정보[%s]추가에 실패하였습니다."
-					, product.getProdCode());
+			message = String.format("제품 정보[%s]추가에 실패하였습니다.", product.getProdCode());
 			
 			reply = getReply("error");
 			e.printStackTrace();
@@ -129,16 +127,18 @@ public class Manager {
 		String message = null;
 		
 		try {
-			warehouse.remove(product);
+			int rmCnt = warehouse.remove(product);
 			
-			message = String.format("제품 정보[%s]삭제에 성공하였습니다."
-					, product.getProdCode());
+			if (product != null) {
+				message = String.format("제품 정보[%s]삭제에 성공하였습니다.", product.getProdCode());
+			} else {
+				message = String.format("제품 정보[%d]건을 삭제하였습니다.", rmCnt);
+			}
 			
 			reply = getReply("message");
 			
 		} catch (NotFoundException e) {
-			message = String.format("제품 정보[%s]삭제에 실패하였습니다."
-					, product.getProdCode());
+			message = String.format("제품 정보[%s]삭제에 실패하였습니다.", product.getProdCode());
 			
 			reply = getReply("error");
 			
@@ -166,9 +166,7 @@ public class Manager {
 		} catch (NotFoundException e) {
 			reply = getReply("error");
 			
-			reply.reply("찾는 제품["
-					+ product.getProdCode()
-					+"]이(가) 존재하지 않습니다.");
+			reply.reply("찾는 제품[" + product.getProdCode() +"]이(가) 존재하지 않습니다.");
 			e.printStackTrace();
 		}
 	}
@@ -185,9 +183,3 @@ public class Manager {
 	}
 	
 }
-
-
-
-
-
-

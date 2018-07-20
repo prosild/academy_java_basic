@@ -63,7 +63,7 @@ public class MybatisWarehouse implements GeneralWarehouse {
 		mapper = session.getMapper(ProductMapper.class);
 		
 		try {
-			// 3. mapper를 통하여 조회 진행
+			// 3. mapper를 통하여 삭제 진행
 			found = mapper.selectOne(product);
 		} finally {
 			if (session != null) {
@@ -90,7 +90,7 @@ public class MybatisWarehouse implements GeneralWarehouse {
 		mapper = session.getMapper(ProductMapper.class);
 		
 		try {
-			// 3. mapper를 통하여 수정 진행
+			// 3. mapper를 통하여 삭제 진행
 			setCnt = mapper.update(product);
 		} finally {
 			if (session != null) {
@@ -104,7 +104,7 @@ public class MybatisWarehouse implements GeneralWarehouse {
 	@Override
 	public int remove(Product product) throws NotFoundException {
 		// 삭제할 대상 제품이 있는지 선 조회
-		if (!isExists(product)) {
+		if (product != null && !isExists(product)) {
 			throw new NotFoundException("삭제", product);
 		}
 		
@@ -118,7 +118,7 @@ public class MybatisWarehouse implements GeneralWarehouse {
 		
 		try {
 			// 3. mapper를 통하여 삭제 진행
-			rmCnt = mapper.deleteOne(product);
+			rmCnt = mapper.delete(product);
 		} finally {
 			if (session != null) {
 				session.close();
